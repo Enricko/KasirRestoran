@@ -40,6 +40,16 @@ class MasakanController extends Controller
         
         $tujuan_upload = 'images/masakan';
         $file->move($tujuan_upload,$file_name);
-        
+
+        $data = [
+            'image' => $file_name,
+            'nama_masakan' => request()->nama_masakan,
+            'type' => request()->type_masakan,
+            'status_masakan' => request()->status_masakan,
+            'harga' => request()->harga_masakan,
+        ];
+        Masakan::create($data);
+        return redirect()->to('/master/masakan')->with('success',"Masakan". request()->nama_masakan."telah di tambahkan!");
+
     }
 }

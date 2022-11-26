@@ -23,11 +23,11 @@
         <form action="/admin/tambah_data_masakan" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="image">Image Masakan</label>
-                <input type="file" class="form-control" name="image_masakan" id="image" placeholder="Harga Masakan">
+                <input type="file" class="form-control" name="image_masakan" id="image" placeholder="Harga Masakan" required>
             </div>
             <div class="form-group">
                 <label for="nama">Nama Masakan</label>
-                <input type="text" class="form-control" name="nama_masakan" id="nama" placeholder="Nama Masakan">
+                <input type="text" class="form-control" name="nama_masakan" id="nama" placeholder="Nama Masakan" required>
             </div>
             <div class="form-group">
                 <label for="type">Type Masakan</label>
@@ -47,7 +47,7 @@
             </div>
             <div class="form-group">
                 <label for="harga">Harga Masakan</label>
-                <input type="number" class="form-control" name="harga_masakan" id="harga" placeholder="Harga Masakan">
+                <input type="number" class="form-control" name="harga_masakan" id="harga" placeholder="Harga Masakan" required>
             </div>
         </form>
       </div>
