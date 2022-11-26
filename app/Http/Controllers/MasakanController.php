@@ -50,6 +50,44 @@ class MasakanController extends Controller
         ];
         Masakan::create($data);
         return redirect()->to('/admin/masakan')->with('success',"Masakan ". request()->nama_masakan." telah di tambahkan!");
+        
+    }
+    public function edit($id_masakan){
+        $data['masakan'] = Masakan::where('id_masakan',$id_masakan)->first();
+        $data['id'] = $id_masakan;
+        $data['sidebar'] = 'masakan';
 
+        return view('admin.pages.masakan.edit',$data);
+    }
+    public function edit_data($id_masakan){
+        $file = request()->image_masakan;
+        $file_name = Str::random(25).'-'.$file->getClientOriginalName();
+        
+        $tujuan_upload = 'images/masakan';
+        $file->move($tujuan_upload,$file_name);
+
+        $tmp = public_path('images/masakan/'.request()->old_image_masakan);
+        if (file_exists($tmp)) {
+            unlink($tmp);
+        }
+        $data = [
+            'image' => $file_name,
+            'nama_masakan' => request()->nama_masakan,
+            'type' => request()->type_masakan,
+            'status_masakan' => request()->status_masakan,
+            'harga' => request()->harga_masakan,
+        ];
+        Masakan::where('id_masakan',$id_masakan)->update($data);
+        return redirect()->to('/admin/masakan')->with('update',"Masakan ".request()->nama_masakan." telah di hapus!");
+    }
+    public function delete($id_masakan){
+        $masakan = Masakan::where('id_masakan',$id_masakan)->first();
+        $tmp = public_path('images/masakan/'.$masakan->image);
+        if (file_exists($tmp)) {
+            unlink($tmp);
+        }
+        Masakan::where('id_masakan',$id_masakan)->delete();
+        
+        return redirect()->to('/admin/masakan')->with('delete',"Masakan telah di hapus!");
     }
 }

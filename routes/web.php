@@ -28,5 +28,8 @@ Route::prefix('admin')->group(function(){
     Route::get('/tambah_masakan',[App\Http\Controllers\MasakanController::class,'tambah']);
     Route::post('/tambah_data_masakan',[App\Http\Controllers\MasakanController::class,'tambah_data']);
     Route::post('/status_masakan',[App\Http\Controllers\MasakanController::class,'status_masakan']);
+    Route::get('/edit_masakan/{id_masakan}',[App\Http\Controllers\MasakanController::class,'edit']);
+    Route::post('/edit_data_masakan/{id_masakan}',[App\Http\Controllers\MasakanController::class,'edit_data']);
+    Route::get('/delete_masakan/{id_masakan}',[App\Http\Controllers\MasakanController::class,'delete']);
     // === MASAKAN ===
 });

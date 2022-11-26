@@ -49,7 +49,10 @@
                             <button class="btn btn-{{ $row->status_masakan == 'habis' ? 'danger' : 'success' }}" value="{{ $row->id_masakan }}" name="ubah_status">{{ $row->status_masakan }}</button>
                         </form>
                     </td>
-                    <td></td>
+                    <td>
+                      <a href="/admin/edit_masakan/{{ $row->id_masakan }}" class="btn btn-warning">Edit</a>
+                      <a href="/admin/delete_masakan/{{ $row->id_masakan }}" class="btn btn-danger">Delete</a>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
