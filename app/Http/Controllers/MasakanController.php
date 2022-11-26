@@ -8,6 +8,10 @@ use Illuminate\Support\Str;
 
 class MasakanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(){
         $data['masakan'] = Masakan::all();
         $data['sidebar'] = 'masakan';

@@ -32,4 +32,10 @@ Route::prefix('admin')->group(function(){
     Route::post('/edit_data_masakan/{id_masakan}',[App\Http\Controllers\MasakanController::class,'edit_data']);
     Route::get('/delete_masakan/{id_masakan}',[App\Http\Controllers\MasakanController::class,'delete']);
     // === MASAKAN ===
+
+    // === MEJA ===
+    Route::get('/meja',[App\Http\Controllers\MejaController::class,'index']);
+    Route::get('/tambah_meja',[App\Http\Controllers\MejaController::class,'tambah']);
+    Route::get('/delete_meja/{no_meja}',[App\Http\Controllers\MejaController::class,'delete']);
+    // === MEJA ===
 });
