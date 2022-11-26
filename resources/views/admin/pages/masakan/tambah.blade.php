@@ -21,6 +21,7 @@
     <section class="content">
       <div class="container-fluid">
         <form action="/admin/tambah_data_masakan" method="POST" enctype="multipart/form-data">
+            @csrf
             <div class="form-group">
                 <label for="image">Image Masakan</label>
                 <input type="file" class="form-control" name="image_masakan" id="image" placeholder="Harga Masakan" required>
@@ -49,6 +50,7 @@
                 <label for="harga">Harga Masakan</label>
                 <input type="number" class="form-control" name="harga_masakan" id="harga" placeholder="Harga Masakan" required>
             </div>
+            <button class="btn btn-primary mt-1" type="submit">Tambah</button>
         </form>
       </div>
     </section>
