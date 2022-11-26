@@ -26,7 +26,7 @@ Route::prefix('admin')->group(function(){
     // === MASAKAN ===
     Route::get('/masakan',[App\Http\Controllers\MasakanController::class,'index']);
     Route::get('/tambah_masakan',[App\Http\Controllers\MasakanController::class,'tambah']);
-    Route::get('/tambah_data_masakan',[App\Http\Controllers\MasakanController::class,'tambah_data']);
+    Route::post('/tambah_data_masakan',[App\Http\Controllers\MasakanController::class,'tambah_data']);
     Route::post('/status_masakan',[App\Http\Controllers\MasakanController::class,'status_masakan']);
     // === MASAKAN ===
 });

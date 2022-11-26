@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Masakan extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'image',
+        'nama_masakan',
+        'type',
+        'status_masakan',
+        'harga',
+    ];
 }

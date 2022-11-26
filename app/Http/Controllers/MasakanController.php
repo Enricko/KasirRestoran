@@ -49,7 +49,7 @@ class MasakanController extends Controller
             'harga' => request()->harga_masakan,
         ];
         Masakan::create($data);
-        return redirect()->to('/master/masakan')->with('success',"Masakan". request()->nama_masakan."telah di tambahkan!");
+        return redirect()->to('/admin/masakan')->with('success',"Masakan ". request()->nama_masakan." telah di tambahkan!");
 
     }
 }

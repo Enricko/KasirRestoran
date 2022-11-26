@@ -8,8 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <h1 class="m-0">Masakan
-              <a href="/tambah_masakan" class="btn btn-primary float-right">Tambah</a>
+            <h1 class="m-0">Tambah Masakan
             </h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -22,9 +21,10 @@
       <div class="container-fluid">
         <form action="/admin/tambah_data_masakan" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="form-group">
-                <label for="image">Image Masakan</label>
-                <input type="file" class="form-control" name="image_masakan" id="image" placeholder="Harga Masakan" required>
+            <label for="image">Image Masakan</label>
+            <div class="input-group mb-3">
+                <label class="custom-file-label" for="image">Image Masakan</label>
+                <input type="file" class="custom-file-input" name="image_masakan" id="image" placeholder="Harga Masakan" required>
             </div>
             <div class="form-group">
                 <label for="nama">Nama Masakan</label>
@@ -50,7 +50,7 @@
                 <label for="harga">Harga Masakan</label>
                 <input type="number" class="form-control" name="harga_masakan" id="harga" placeholder="Harga Masakan" required>
             </div>
-            <button class="btn btn-primary mt-1" type="submit">Tambah</button>
+            <button class="btn btn-primary mt-1 float-right" type="submit">Tambah</button>
         </form>
       </div>
     </section>

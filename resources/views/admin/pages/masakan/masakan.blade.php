@@ -39,6 +39,7 @@
                 @foreach ($masakan as $row)
                 <tr>
                     <td>{{ $no++ }}</td>
+                    <td><img src="{{ asset('images/masakan/'.$row->image) }}" alt="" style="width: 100px"></td>
                     <td>{{ $row->nama_masakan }}</td>
                     <td>{{ $row->type }}</td>
                     <td>{{ $row->harga }}</td>
