@@ -25,7 +25,7 @@ class FrontController extends Controller
             'tgl_pesanan' => now(),
             'id' => Auth::user()->id,
             'no_meja' => Meja::where('status_meja','kosong')->first()->no_meja,
-            'total_harga' => null,
+            'total_harga' => 0,
             'bayar' => null,
             'kembalian' => null,
             'status_pesanan' => 'belum_bayar',
@@ -198,6 +198,7 @@ class FrontController extends Controller
 
     public static function table_pesanan($id_pesanan){
         $no = 1;
+        $total = 0;
         $pesanan = DetailMasakan::join('masakans','masakans.id_masakan','=','detail_masakans.id_masakan')->where('id_pesanan',$id_pesanan)->get();
         $output = "";
         $output .= "
@@ -226,12 +227,35 @@ class FrontController extends Controller
                     <button class='btn btn-danger' onclick='return remove_pesanan($row->id_detail)'>Remove</button>
                 </td>
             </tr>";
+            $total += $row->sub_total;
         }
         $output .="
         
             </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan='4' class='text-center'>SUBTOTAL</th>
+                    <th class='text-center'>Rp.".number_format( $total)."</th>
+                </tr>
+            </tfoot>
         </table>";
 
         return $output;
+    }
+    public function change_status_pesanan(){
+        if (request()->ajax()) {
+            Pesanan::where('id_pesanan',request()->id_pesanan)->update(['status_makanan_pesanan'=>request()->status_pesanan]);
+
+            return Response();
+        }
+        return redirect()->back();
+    }
+    public function konfirmasi_pembayaran(){
+        if(request()->ajax()){
+            Pesanan::where('id_pesanan',request()->id_pesanan)->update(['status_pesanan'=>request()->status_pemesanan]);
+
+            return redirect()->to('/list_pesanan');
+        }
+        return redirect()->back();
     }
 }

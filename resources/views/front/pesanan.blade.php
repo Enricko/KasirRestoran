@@ -90,6 +90,7 @@
                                 <tbody>
                                     @php
                                         $no = 1;
+                                        $total = 0;
                                     @endphp
                                     @foreach ($pesanan as $row)
                                         <tr>
@@ -104,8 +105,17 @@
                                                 <button class="btn btn-danger" onclick="return remove_pesanan('{{ $row->id_detail }}')">Remove</button>
                                             </td>
                                         </tr>
+                                        @php
+                                            $total += $row->sub_total;
+                                        @endphp
                                     @endforeach
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan='4' class='text-center'>SUBTOTAL</th>
+                                        <th class='text-center'>Rp.{{ $total }}</th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>

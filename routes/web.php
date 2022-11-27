@@ -20,6 +20,8 @@ Route::get('/pesanan/{id_pesanan}',[App\Http\Controllers\FrontController::class,
 Route::post('/add_pesanan',[App\Http\Controllers\FrontController::class,'add_pesanan']);
 Route::get('/remove_pesanan',[App\Http\Controllers\FrontController::class,'remove_pesanan']);
 Route::get('/list_pesanan',[App\Http\Controllers\FrontController::class,'list_pesanan']);
+Route::post('/change_status_pesanan',[App\Http\Controllers\FrontController::class,'change_status_pesanan']);
+Route::post('/konfirmasi_pembayaran',[App\Http\Controllers\FrontController::class,'konfirmasi_pembayaran']);
 Route::get('/search_makanan',[App\Http\Controllers\FrontController::class,'search_makanan']);
 Route::get('/search_minuman',[App\Http\Controllers\FrontController::class,'search_minuman']);
 Route::get('/select_masakan',[App\Http\Controllers\FrontController::class,'select_masakan']);
