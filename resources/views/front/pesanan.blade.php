@@ -2,11 +2,18 @@
 @section('title','Restaurant WEI')
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <div class="container">
+    <div class="container-fluid">
         <div class="card my-5">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-12 col-md-8">
+                    <div class="mx-auto">
+                        <a href="/" class="btn btn-secondary">Back</a>
+                        <a href="/list_pesanan" class="btn btn-secondary">Finish</a>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12 col-md-6">
                         <div class="d-flex justify-content-center">
                             <button class="btn btn-secondary mx-1 btn-makanan" onclick="return makanan()">Makanan</button>
                             <button class="btn btn-secondary mx-1 btn-minuman" onclick="return minuman()">Minuman</button>
@@ -65,9 +72,41 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4 " style="background-color: #212121;border-radius:10px;">
+                    <div class="col-12 col-md-6 " style="background-color: #212121;border-radius:10px;">
                         <div class="select-masakan my-3">
 
+                        </div>
+                        <div class="select-masakan-table">
+                            <table class="table table-bordered text-light">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Nama Masakan</th>
+                                        <th>Qty</th>
+                                        <th>Sub Total</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $no = 1;
+                                    @endphp
+                                    @foreach ($pesanan as $row)
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $row->nama_masakan }}</td>
+                                            <td>{{ $row->qty }}</td>
+                                            <td>Rp.{{ number_format($row->sub_total) }}</td>
+                                            <td>
+                                                <button class='btn btn-warning' name='id_masakan' id='select-masakan' onclick="return select_masakan( {{ $row->id_masakan}} )" >
+                                                    Edit
+                                                </button>
+                                                <button class="btn btn-danger" onclick="return remove_pesanan('{{ $row->id_detail }}')">Remove</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -89,6 +128,7 @@
             document.querySelector('.btn-minuman').classList.add('active');
         }
     </script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">
         $('#search-makanan').on('keyup',function(){
             $value=$(this).val();
@@ -113,11 +153,13 @@
             });
         });
         function select_masakan(id){
-            $value=id;
             $.ajax({
                 type : 'get',
                 url : '/select_masakan',
-                data:{'id_masakan':$value},
+                data:{
+                    'id_masakan': id,
+                    'id_pesanan': {{ $id_pesanan }}
+                },
                 success:function(data){
                     $('.select-masakan').html(data);
                 }
@@ -127,6 +169,37 @@
             $total = value * harga;
             $format = $total.toLocaleString();
             $('#subtotal-masakan').text('Rp.' + $format);
+        }
+        function add_pesanan(id_masakan){
+            $qty = document.getElementById("qty-masakan").value;
+            $.ajax({
+                type : 'post',
+                url : '/add_pesanan',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data:{
+                    'qty': $qty,
+                    'id_masakan': id_masakan,
+                    'id_pesanan': {{ $id_pesanan }}
+                },
+                success:function(data){
+                    $('.select-masakan-table').html(data);
+                },
+            });
+        }
+        function remove_pesanan(id_detail) {
+            $.ajax({
+                type : 'get',
+                url : '/remove_pesanan',
+                data:{
+                    'id_detail': id_detail,
+                    'id_pesanan': {{ $id_pesanan }}
+                },
+                success:function(data){
+                    $('.select-masakan-table').html(data);
+                }
+            });
         }
     </script>
     <script type="text/javascript">

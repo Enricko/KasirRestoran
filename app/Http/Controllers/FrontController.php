@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailMasakan;
 use App\Models\Masakan;
 use App\Models\Meja;
 use App\Models\Pesanan;
@@ -33,9 +34,11 @@ class FrontController extends Controller
         $id_pesanan = Pesanan::create($data)->id;
         return redirect()->to("/pesanan/$id_pesanan");
     }
-    public function pesanan(){
+    public function pesanan($id_pesanan){
         $data['makanan'] = Masakan::where('type','makanan')->get();
         $data['minuman'] = Masakan::where('type','minuman')->get();
+        $data['id_pesanan'] = $id_pesanan;
+        $data['pesanan'] = DetailMasakan::join('masakans','masakans.id_masakan','=','detail_masakans.id_masakan')->where('id_pesanan',$id_pesanan)->get();
         return view('front.pesanan',$data);
     }
     public function list_pesanan(){
@@ -71,6 +74,7 @@ class FrontController extends Controller
             }
             return Response($output);
         }
+        return redirect()->back();
     }
     public function search_minuman(){
         if (request()->ajax()) {
@@ -100,24 +104,46 @@ class FrontController extends Controller
             }
             return Response($output);
         }
+        return redirect()->back();
     }
     public function select_masakan(){
         if (request()->ajax()) {
             $output = '';
-            $makanan = Masakan::where('id_masakan',request()->id_masakan)->first();
-            $output .= "
-            <form action='' method='post'>
-                <div class='mx-auto text-center'>
-                    <img src='".asset('images/masakan/'.$makanan->image)."' style='width:80px;height:80px;margin-bottom:5px;'>
-                    <p>".$makanan->nama_masakan."</p>
-                    <p>Rp.".number_format($makanan->harga,0,'.',',')."</p>
-                </div>
-                <input type='search' class='form-control' placeholder='qty' name='qty' id='qty-masakan' onkeyup='return qty_masakan(value,".$makanan->harga.")'>
-                <h5 class='mt-1 float-right'>Subtotal : <span id='subtotal-masakan'>Rp.0</span></h5>
-            </form>
-            
-            ";
-            if ($makanan->count() <= 0) {
+            $masakan = Masakan::where('id_masakan',request()->id_masakan)->first();
+            $pesanan = DetailMasakan::join('masakans','masakans.id_masakan','=','detail_masakans.id_masakan')->where('id_pesanan',request()->id_pesanan)->where('detail_masakans.id_masakan',request()->id_masakan)->first();
+            if (!$pesanan) {
+                $output .= "
+                    <div class='row mx-2'>
+                        <div class='mx-auto text-center'>
+                            <img src='".asset('images/masakan/'.$masakan->image)."' style='width:80px;height:80px;margin-bottom:5px;'>
+                            <p>".$masakan->nama_masakan."</p>
+                            <p>Rp.".number_format($masakan->harga,0,'.',',')."</p>
+                        </div>
+                        <input type='number' class='form-control' placeholder='qty' name='qty' id='qty-masakan' onkeyup='return qty_masakan(value,".$masakan->harga.")'>
+                        <h5 class='mt-1 float-right'>Subtotal : <span id='subtotal-masakan'>Rp.0</span></h5>
+                        <div class='col-12'>
+                            <button class='btn btn-secondary float-right' onclick='return add_pesanan($masakan->id_masakan)'>Pesan</button>
+                        </div>
+                    </div>
+                    
+                    ";
+            }else{
+                $output .= "
+                    <div class='row mx-2'>
+                        <div class='mx-auto text-center'>
+                            <img src='".asset('images/masakan/'.$masakan->image)."' style='width:80px;height:80px;margin-bottom:5px;'>
+                            <p>".$masakan->nama_masakan."</p>
+                            <p>Rp.".number_format($masakan->harga,0,'.',',')."</p>
+                        </div>
+                        <input type='number' class='form-control' placeholder='qty' name='qty' id='qty-masakan' value='$pesanan->qty' onkeyup='return qty_masakan(value,".$masakan->harga.")' maxlength='5' oninput='javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);'>
+                        <h5 class='mt-1 float-right'>Subtotal : <span id='subtotal-masakan'>Rp.0</span></h5>
+                        <div class='col-12'>
+                            <button class='btn btn-warning float-right' onclick='return add_pesanan($masakan->id_masakan)'>Ubah Pesanan</button>
+                        </div>
+                    </div>
+                    ";
+            }
+            if ($masakan->count() <= 0) {
                 $output .= "
                 <div class='mx-auto'>
                     <div style='min-height:150px;margin-top:75px;'>
@@ -128,5 +154,84 @@ class FrontController extends Controller
             }
             return Response($output);
         }
+        return redirect()->back();
+    }
+    public function add_pesanan()
+    {
+        if (request()->ajax()) {
+            $masakan = Masakan::where('id_masakan',request()->id_masakan)->first();
+            $detail = DetailMasakan::where('id_masakan',request()->id_masakan)->where('id_pesanan',request()->id_pesanan)->first();
+            if ($detail) {
+                $data = [
+                    'id_pesanan' => request()->id_pesanan,
+                    'id_masakan' => request()->id_masakan,
+                    'qty' => request()->qty,
+                    'sub_total' => request()->qty * $masakan->harga,
+                    'keterangan_pesanan' => 'none',
+                    'status' => 'dimasak',
+                ];
+                DetailMasakan::where('id_detail',$detail->id_detail)->update($data);
+            }else{
+                $data = [
+                    'id_pesanan' => request()->id_pesanan,
+                    'id_masakan' => request()->id_masakan,
+                    'qty' => request()->qty,
+                    'sub_total' => request()->qty * $masakan->harga,
+                    'keterangan_pesanan' => 'none',
+                    'status' => 'dimasak',
+                ];
+                DetailMasakan::create($data);
+            }
+            return Response($this->table_pesanan(request()->id_pesanan));
+            
+        }
+        return redirect()->back();
+    }
+    public function remove_pesanan(){
+        if (request()->ajax()) {
+            DetailMasakan::where('id_detail',request()->id_detail)->delete();
+            
+            return Response($this->table_pesanan(request()->id_pesanan));
+        }
+        return redirect()->back();
+    }
+
+    public static function table_pesanan($id_pesanan){
+        $no = 1;
+        $pesanan = DetailMasakan::join('masakans','masakans.id_masakan','=','detail_masakans.id_masakan')->where('id_pesanan',$id_pesanan)->get();
+        $output = "";
+        $output .= "
+        <table class='table table-bordered text-light'>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nama Masakan</th>
+                    <th>Qty</th>
+                    <th>Sub Total</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>";
+        foreach ($pesanan as $row){
+            $output .= "
+            <tr>
+                <td>".$no++."</td>
+                <td>".$row->nama_masakan."</td>
+                <td>$row->qty</td>
+                <td>Rp.".wordwrap(number_format($row->sub_total),15,'<br>\n')."</td>
+                <td>
+                    <button class='btn btn-warning' name='id_masakan' id='select-masakan' onclick='return select_masakan( $row->id_masakan )' >
+                        Edit
+                    </button>
+                    <button class='btn btn-danger' onclick='return remove_pesanan($row->id_detail)'>Remove</button>
+                </td>
+            </tr>";
+        }
+        $output .="
+        
+            </tbody>
+        </table>";
+
+        return $output;
     }
 }

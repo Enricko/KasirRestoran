@@ -66,18 +66,23 @@
                                                     <tbody>
                                                         @php
                                                             $p = 1;
-                                                            $detail_pesanan = DetailMasakan::where('id_pesanan',$row->id_pesanan)->get();
+                                                            $detail_pesanan = DetailMasakan::join('masakans','masakans.id_masakan','=','detail_masakans.id_masakan')->where('id_pesanan',$row->id_pesanan)->get();
                                                         @endphp
                                                         @foreach ($detail_pesanan as $item)
                                                             <tr>
                                                                 <td>{{ $p++ }}</td>
+                                                                <td>{{ $item->nama_masakan }}</td>
+                                                                <td>{{ $item->qty }}</td>
+                                                                <td>Rp.{{ number_format($item->sub_total) }}</td>
+                                                                <td>{{ $item->keterangan_pesanan }}</td>
+                                                                <td>{{ $item->status }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>
                                             <div class="col-2">
-                                                <a href="/pesanan/{{ $row->id_pesanan }}" class="btn btn-warning">Edit</a>
+                                                <a href="/pesanan/{{ $row->id_pesanan }}" class="btn btn-warning float-right">Edit</a>
                                             </div>
                                         </div>
                                     </td>
