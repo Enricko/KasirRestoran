@@ -18,7 +18,7 @@ class FrontController extends Controller
         return view('front.index');
     }
     public function create_pesanan(){
-        if (Meja::where('status_meja','kosong')->get()) {
+        if (Meja::where('status_meja','kosong')->get()->count() <= 0) {
             return redirect()->to("/")->with('error','Tidak ada meja yang kosong!');
         }
         $data = [

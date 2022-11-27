@@ -14,7 +14,7 @@
                             @csrf
                             <button class="btn btn-secondary mx-1" type="submit">Mulai Pemesanan</button>
                         </form>
-                        <a href="" class="btn btn-secondary mx-1">Lihat Pesanan yang sedang berlangsung</a><br>
+                        <a href="/list_pesanan" class="btn btn-secondary mx-1">Lihat Pesanan yang sedang berlangsung</a><br>
                     </div>
                 </div>
                 <div class="col-12 text-center">
