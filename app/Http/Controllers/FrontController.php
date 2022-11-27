@@ -48,7 +48,7 @@ class FrontController extends Controller
             $output = '';
             $makanan = Masakan::where('type','makanan')->where('nama_masakan','LIKE','%'.request()->search.'%')->get();
             foreach($makanan as $row){
-                $output .= "<div class='col-4'>
+                $output .= "<div class='col-12 col-md-6 col-xl-4'>
                 <button class='btn btn-link' value='$row->id_masakan' name='id_masakan' id='select-masakan' onclick='return select_masakan( $row->id_masakan )'>
                     <div class='card p-2'>
                         <img src='".asset('images/masakan/'.$row->image)."' alt='' class='mx-auto' style='width: 200px;height:200px;margin:5px;'>
@@ -77,7 +77,7 @@ class FrontController extends Controller
             $output = '';
             $minuman = Masakan::where('type','minuman')->where('nama_masakan','LIKE','%'.request()->search.'%')->get();
             foreach($minuman as $row){
-                $output .= "<div class='col-4'>
+                $output .= "<div class='col-12 col-md-6 col-xl-4'>
                 <button class='btn btn-link' value='$row->id_masakan' name='id_masakan' id='select-masakan' onclick='return select_masakan( $row->id_masakan )'>
                     <div class='card p-2'>
                         <img src='".asset('images/masakan/'.$row->image)."' alt='' class='mx-auto' style='width: 200px;height:200px;margin:5px;'>

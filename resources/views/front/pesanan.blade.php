@@ -24,7 +24,7 @@
                                 </div>
                                 <div class="row search-makanans">
                                     @foreach ($makanan as $row)
-                                        <div class="col-4">
+                                        <div class="col-12 col-md-6 col-xl-4">
                                             <button class="btn btn-link" value="{{ $row->id_masakan }}" name="id_masakan" id="select-masakan" onclick="return select_masakan({{ $row->id_masakan }})">
                                                 <div class="card p-2">
                                                     <img src="{{ asset('images/masakan/'.$row->image) }}" alt="" class="mx-auto" style="width: 200px;height:200px;margin:5px;">
@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="row search-minumans">
                                     @foreach ($minuman as $row)
-                                        <div class="col-4">
+                                        <div class="col-12 col-md-6 col-xl-4">
                                             <button class="btn btn-link" value="{{ $row->id_masakan }}" name="id_masakan" id="select-masakan" onclick="return select_masakan({{ $row->id_masakan }})">
                                                 <div class="card p-2">
                                                     <img src="{{ asset('images/masakan/'.$row->image) }}" alt="" class="mx-auto" style="width: 200px;height:200px;margin:5px;">
