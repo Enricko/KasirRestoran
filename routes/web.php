@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',[App\Http\Controllers\FrontController::class,'index']);
+Route::post('/create_pesanan',[App\Http\Controllers\FrontController::class,'create_pesanan']);
+Route::get('/pesanan/{id_pesanan}',[App\Http\Controllers\FrontController::class,'pesanan']);
+Route::get('/list_pesanan',[App\Http\Controllers\FrontController::class,'list_pesanan']);
+Route::get('/search_makanan',[App\Http\Controllers\FrontController::class,'search_makanan']);
+Route::get('/search_minuman',[App\Http\Controllers\FrontController::class,'search_minuman']);
+Route::get('/select_masakan',[App\Http\Controllers\FrontController::class,'select_masakan']);
 
 Auth::routes();
 
