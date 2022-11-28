@@ -35,11 +35,14 @@ class FrontController extends Controller
         return redirect()->to("/pesanan/$id_pesanan");
     }
     public function pesanan($id_pesanan){
-        $data['makanan'] = Masakan::where('type','makanan')->get();
-        $data['minuman'] = Masakan::where('type','minuman')->get();
-        $data['id_pesanan'] = $id_pesanan;
-        $data['pesanan'] = DetailMasakan::join('masakans','masakans.id_masakan','=','detail_masakans.id_masakan')->where('id_pesanan',$id_pesanan)->get();
-        return view('front.pesanan',$data);
+        if (Pesanan::where('status_pesanan','belum_bayar')->where('id_pesanan',$id_pesanan)->first()) {
+            $data['makanan'] = Masakan::where('type','makanan')->get();
+            $data['minuman'] = Masakan::where('type','minuman')->get();
+            $data['id_pesanan'] = $id_pesanan;
+            $data['pesanan'] = DetailMasakan::join('masakans','masakans.id_masakan','=','detail_masakans.id_masakan')->where('id_pesanan',$id_pesanan)->get();
+            return view('front.pesanan',$data);
+        }
+        return redirect()->to('/')->with('error','Pesanan telah selesai anda tidak dapat mengubahnya lagi');
     }
     public function list_pesanan(){
         $data['pesanan'] = Pesanan::where('status_pesanan','belum_bayar')->get();
@@ -107,6 +110,19 @@ class FrontController extends Controller
         return redirect()->back();
     }
     public function select_masakan(){
+        if (Pesanan::where('status_pesanan','sudah_bayar')->where('id_pesanan',request()->id_pesanan)->first()) {
+            $output = "
+            <script>
+                window.location.href = '/';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'App Said : ',
+                    text: 'Pesanan telah selesai anda tidak dapat mengubahnya lagi',
+                })
+            </script>
+            ";
+            return Response($output);
+        }
         if (request()->ajax()) {
             $output = '';
             $masakan = Masakan::where('id_masakan',request()->id_masakan)->first();
@@ -156,8 +172,20 @@ class FrontController extends Controller
         }
         return redirect()->back();
     }
-    public function add_pesanan()
-    {
+    public function add_pesanan(){    
+        if (Pesanan::where('status_pesanan','sudah_bayar')->where('id_pesanan',request()->id_pesanan)->first()) {
+            $output = "
+            <script>
+                window.location.href = '/';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'App Said : ',
+                    text: 'Pesanan telah selesai anda tidak dapat mengubahnya lagi',
+                })
+            </script>
+            ";
+            return Response($output);
+        }
         if (request()->ajax()) {
             $masakan = Masakan::where('id_masakan',request()->id_masakan)->first();
             $detail = DetailMasakan::where('id_masakan',request()->id_masakan)->where('id_pesanan',request()->id_pesanan)->first();
@@ -188,6 +216,19 @@ class FrontController extends Controller
         return redirect()->back();
     }
     public function remove_pesanan(){
+        if (Pesanan::where('status_pesanan','sudah_bayar')->where('id_pesanan',request()->id_pesanan)->first()) {
+            $output = "
+            <script>
+                window.location.href = '/';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'App Said : ',
+                    text: 'Pesanan telah selesai anda tidak dapat mengubahnya lagi',
+                })
+            </script>
+            ";
+            return Response($output);
+        }
         if (request()->ajax()) {
             DetailMasakan::where('id_detail',request()->id_detail)->delete();
             
