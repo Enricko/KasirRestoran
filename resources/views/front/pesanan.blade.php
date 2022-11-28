@@ -32,12 +32,15 @@
                                 <div class="row search-makanans">
                                     @foreach ($makanan as $row)
                                         <div class="col-12 col-md-6 col-xl-4">
-                                            <button class="btn btn-link" value="{{ $row->id_masakan }}" name="id_masakan" id="select-masakan" onclick="return select_masakan({{ $row->id_masakan }})">
+                                            <button class="btn btn-link {{ $row->status_masakan == 'hadis' ? 'disabled' : '' }}" value="{{ $row->id_masakan }}" name="id_masakan" id="select-masakan" onclick="return select_masakan({{ $row->id_masakan }})">
                                                 <div class="card p-2">
-                                                    <img src="{{ asset('images/masakan/'.$row->image) }}" alt="" class="mx-auto" style="width: 200px;height:200px;margin:5px;">
+                                                    <img src="{{ asset('images/masakan/'.$row->image) }}" alt="" class="mx-auto" style="width: 180px;height:180px;margin:5px;">
                                                     <div class="card-body">
                                                         <h6>{{ $row->nama_masakan }}</h6>
                                                         <p>Rp.{{ number_format($row->harga,0,',','.') }}</p>
+                                                        @if ($row->status_masakan == 'habis')
+                                                            <h5 class="text-danger">HABIS</h5>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </button> 
@@ -57,12 +60,15 @@
                                 <div class="row search-minumans">
                                     @foreach ($minuman as $row)
                                         <div class="col-12 col-md-6 col-xl-4">
-                                            <button class="btn btn-link" value="{{ $row->id_masakan }}" name="id_masakan" id="select-masakan" onclick="return select_masakan({{ $row->id_masakan }})">
+                                            <button class="btn btn-link {{ $row->status_masakan == 'hadis' ? 'disabled' : '' }}" value="{{ $row->id_masakan }}" name="id_masakan" id="select-masakan" onclick="return select_masakan({{ $row->id_masakan }})">
                                                 <div class="card p-2">
-                                                    <img src="{{ asset('images/masakan/'.$row->image) }}" alt="" class="mx-auto" style="width: 200px;height:200px;margin:5px;">
+                                                    <img src="{{ asset('images/masakan/'.$row->image) }}" alt="" class="mx-auto" style="width: 180px;height:180px;margin:5px;">
                                                     <div class="card-body">
                                                         <h6>{{ $row->nama_masakan }}</h6>
                                                         <p>Rp.{{ number_format($row->harga,0,',','.') }}</p>
+                                                        @if ($row->status_masakan == 'habis')
+                                                            <h5 class="text-danger">HABIS</h5>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </button>

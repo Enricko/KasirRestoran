@@ -55,12 +55,17 @@ class FrontController extends Controller
             $makanan = Masakan::where('type','makanan')->where('nama_masakan','LIKE','%'.request()->search.'%')->get();
             foreach($makanan as $row){
                 $output .= "<div class='col-12 col-md-6 col-xl-4'>
-                <button class='btn btn-link' value='$row->id_masakan' name='id_masakan' id='select-masakan' onclick='return select_masakan( $row->id_masakan )'>
+                <button class='btn btn-link ".$row->status_masakan == 'habis' ? 'disabled' : ''."' value='$row->id_masakan' name='id_masakan' id='select-masakan' onclick='return select_masakan( $row->id_masakan )'>
                     <div class='card p-2'>
-                        <img src='".asset('images/masakan/'.$row->image)."' alt='' class='mx-auto' style='width: 200px;height:200px;margin:5px;'>
+                        <img src='".asset('images/masakan/'.$row->image)."' alt='' class='mx-auto' style='width: 180px;height:180px;margin:5px;'>
                         <div class='card-body'>
-                            <h6>".$row->nama_masakan."</h6>
-                            <p>Rp.".number_format($row->harga,0,',','.')."</p>
+                            <h6>".$row->nama_masakan."</h6>";
+                if ($row->status_masakan == 'habis'){
+                    $output .= "<h5 class='text-danger'>HABIS</h5>";
+                }else{
+                    $output = "<p>Rp.".number_format($row->harga,0,',','.')."</p>";
+                }
+                $output .="
                         </div>
                     </div>
                 </button>
@@ -80,17 +85,22 @@ class FrontController extends Controller
         return redirect()->back();
     }
     public function search_minuman(){
+        
         if (request()->ajax()) {
             $output = '';
             $minuman = Masakan::where('type','minuman')->where('nama_masakan','LIKE','%'.request()->search.'%')->get();
             foreach($minuman as $row){
                 $output .= "<div class='col-12 col-md-6 col-xl-4'>
-                <button class='btn btn-link' value='$row->id_masakan' name='id_masakan' id='select-masakan' onclick='return select_masakan( $row->id_masakan )'>
+                <button class='btn btn-link ".$row->status_masakan == 'habis' ? 'disabled' : ''."' value='$row->id_masakan' name='id_masakan' id='select-masakan' onclick='return select_masakan( $row->id_masakan )'>
                     <div class='card p-2'>
-                        <img src='".asset('images/masakan/'.$row->image)."' alt='' class='mx-auto' style='width: 200px;height:200px;margin:5px;'>
+                        <img src='".asset('images/masakan/'.$row->image)."' alt='' class='mx-auto' style='width: 180px;height:180px;margin:5px;'>
                         <div class='card-body'>
                             <h6>".$row->nama_masakan."</h6>
-                            <p>Rp.".number_format($row->harga,0,',','.')."</p>
+                            <p>Rp.".number_format($row->harga,0,',','.')."</p>";
+                if ($row->status_masakan == 'habis'){
+                    $output .= "<h5 class='text-danger'>HABIS</h5>";
+                }
+                $output .="
                         </div>
                     </div>
                 </button>
@@ -118,6 +128,18 @@ class FrontController extends Controller
                     icon: 'error',
                     title: 'App Said : ',
                     text: 'Pesanan telah selesai anda tidak dapat mengubahnya lagi',
+                })
+            </script>
+            ";
+            return Response($output);
+        }
+        if (Masakan::where('status_masakan','habis')->where('id_masakan',request()->id_masakan)->first()) {
+            $output = "
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'App Said : ',
+                    text: 'Masakan Habis !!',
                 })
             </script>
             ";
