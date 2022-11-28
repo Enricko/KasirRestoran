@@ -44,6 +44,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pesanan_trigger');
+        
+        DB::unprepared('DROP TRIGGER `pesanan_total_insert`');
+        DB::unprepared('DROP TRIGGER `pesanan_total_update`');
+        DB::unprepared('DROP TRIGGER `pesanan_total_delete`');
     }
 };
