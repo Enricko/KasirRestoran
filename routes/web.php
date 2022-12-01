@@ -34,12 +34,14 @@ Route::prefix('admin')->group(function(){
     Route::get('/',[App\Http\Controllers\AdminController::class,'index']);
 
     // === USER ===
-    Route::get('/user',[App\Http\Controllers\UserController::class,'index']);
-    Route::get('/tambah_user',[App\Http\Controllers\UserController::class,'tambah']);
-    Route::post('/tambah_data_user',[App\Http\Controllers\UserController::class,'tambah_data']);
-    Route::get('/edit_user/{id}',[App\Http\Controllers\UserController::class,'edit']);
-    Route::post('/edit_data_user/{id}',[App\Http\Controllers\UserController::class,'edit_data']);
-    Route::get('/delete_user/{id}',[App\Http\Controllers\UserController::class,'delete']);
+    Route::middleware(['auth','admin-access'])->group(function(){
+        Route::get('/user',[App\Http\Controllers\UserController::class,'index']);
+        Route::get('/tambah_user',[App\Http\Controllers\UserController::class,'tambah']);
+        Route::post('/tambah_data_user',[App\Http\Controllers\UserController::class,'tambah_data']);
+        Route::get('/edit_user/{id}',[App\Http\Controllers\UserController::class,'edit']);
+        Route::post('/edit_data_user/{id}',[App\Http\Controllers\UserController::class,'edit_data']);
+        Route::get('/delete_user/{id}',[App\Http\Controllers\UserController::class,'delete']);
+    });
     // === USER ===
 
     // === MASAKAN ===

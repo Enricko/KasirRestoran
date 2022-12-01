@@ -7,7 +7,7 @@
     use App\Models\Meja;
     use App\Models\Log_trigger;
     $no = 1;
-    $log = Log_trigger::all();
+    $log = Log_trigger::orderBy('id_log','DESC')->get();
 @endphp
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
