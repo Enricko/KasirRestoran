@@ -4,6 +4,10 @@
 @php
     use App\Models\User;
     use App\Models\Pesanan;
+    use App\Models\Meja;
+    use App\Models\Log_trigger;
+    $no = 1;
+    $log = Log_trigger::all();
 @endphp
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -56,6 +60,40 @@
           <!-- /.info-box-content -->
         </div>
         <!-- /.info-box -->
+      </div>
+      <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box mb-3">
+          <span class="info-box-icon bg-secondary elevation-1"><i class="fas fa-table"></i></span>
+  
+          <div class="info-box-content">
+            <span class="info-box-text">Pendapatan Bulan ini</span>
+            <span class="info-box-number">{{ number_format(Meja::all()->count())}}</span>
+          </div>
+          <!-- /.info-box-content -->
+        </div>
+        <!-- /.info-box -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <table class="table table-bordered" id="myTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>LOG</th>
+              <th>Waktu</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($log as $row)
+            <tr>
+              <td>{{ $no++ }}</td>
+              <td>{{ $row->deskripsi }}</td>
+              <td>{{ $row->created_at }}</td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
       </div>
     </div>
   </section>

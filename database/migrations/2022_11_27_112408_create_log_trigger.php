@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('log_trigger', function (Blueprint $table) {
+        Schema::create('log_triggers', function (Blueprint $table) {
             $table->id('id_log');
             $table->text('deskripsi');
             $table->timestamps();
@@ -25,7 +25,7 @@ return new class extends Migration
         BEGIN
             DECLARE text_ text(500);
             SET text_ = CONCAT(new.name,'_',new.level,' telah di tambahkan data user',' | ',now());
-            INSERT INTO log_trigger VALUES (NULL,text_,now(),NULL);
+            INSERT INTO log_triggers VALUES (NULL,text_,now(),NULL);
         END
         ");
         DB::unprepared("
@@ -33,7 +33,7 @@ return new class extends Migration
         BEGIN
             DECLARE text_ text(500);
             SET text_ = CONCAT(old.name,'_',old.level,' telah di ubah dari data user',' | ',now());
-            INSERT INTO log_trigger VALUES (NULL,text_,now(),NULL);
+            INSERT INTO log_triggers VALUES (NULL,text_,now(),NULL);
         END
         ");
         DB::unprepared("
@@ -41,7 +41,7 @@ return new class extends Migration
         BEGIN
             DECLARE text_ text(500);
             SET text_ = CONCAT(old.name,' telah di hapus dari data user',' | ',now());
-            INSERT INTO log_trigger VALUES (NULL,text_,now(),NULL);
+            INSERT INTO log_triggers VALUES (NULL,text_,now(),NULL);
         END
         ");
         // === Masakan ===
@@ -55,7 +55,7 @@ return new class extends Migration
                 SELECT users.name, users.id INTO name_, id_ FROM pesanans INNER JOIN users ON pesanans.id = users.id WHERE id_pesanan = new.id_pesanan;
                 SELECT nama_masakan INTO masakan_ FROM masakans WHERE id_masakan = new.id_masakan;
                 SET text_ = CONCAT(name_, '_', id_, ' | Insert detail_masakans Name : ' ,masakan_,'.Ke No Pesanan : ',new.id_pesanan,' dari data detail',' | ',now());
-                INSERT INTO log_trigger VALUES (NULL,text_,now(),NULL);
+                INSERT INTO log_triggers VALUES (NULL,text_,now(),NULL);
                 END
         ");
         DB::unprepared("
@@ -66,7 +66,7 @@ return new class extends Migration
                 SELECT users.name, users.id INTO name_, id_ FROM pesanans INNER JOIN users ON pesanans.id = users.id WHERE id_pesanan = new.id_pesanan;
                 SELECT nama_masakan INTO masakan_ FROM masakans WHERE id_masakan = new.id_masakan;
                 SET text_ = CONCAT(name_, '_', id_, ' | Update detail_masakans Name : ' ,masakan_,'.Ke No Pesanan : ',new.id_pesanan,' dari data detail',' | ',now());
-                INSERT INTO log_trigger VALUES (NULL,text_,now(),NULL);
+                INSERT INTO log_triggers VALUES (NULL,text_,now(),NULL);
             END
         ");
         DB::unprepared("
@@ -77,7 +77,7 @@ return new class extends Migration
                 SELECT users.name, users.id INTO name_, id_ FROM pesanans INNER JOIN users ON pesanans.id = users.id WHERE id_pesanan = old.id_pesanan;
                 SELECT nama_masakan INTO masakan_ FROM masakans WHERE id_masakan = old.id_masakan;
                 SET text_ = CONCAT(name_, '_', id_, ' | Delete detail_masakans Name : ' ,masakan_,'.Ke No Pesanan : ',old.id_pesanan,' dari data detail',' | ',now());
-                INSERT INTO log_trigger VALUES (NULL,text_,now(),NULL);
+                INSERT INTO log_triggers VALUES (NULL,text_,now(),NULL);
             END
         ");
         // === Detail Masakan ===
@@ -88,7 +88,7 @@ return new class extends Migration
         BEGIN
             DECLARE text_ text(500);
             SET text_ = CONCAT('Meja telah di tambah dari data meja',' | ',now());
-            INSERT INTO log_trigger VALUES (NULL,text_,now(),NULL);
+            INSERT INTO log_triggers VALUES (NULL,text_,now(),NULL);
         END
         ");
         DB::unprepared("
@@ -96,7 +96,7 @@ return new class extends Migration
         BEGIN
             DECLARE text_ text(500);
             SET text_ = CONCAT('Meja telah di update dari data meja',' | ',now());
-            INSERT INTO log_trigger VALUES (NULL,text_,now(),NULL);
+            INSERT INTO log_triggers VALUES (NULL,text_,now(),NULL);
         END
         ");
         DB::unprepared("
@@ -104,7 +104,7 @@ return new class extends Migration
         BEGIN
             DECLARE text_ text(500);
             SET text_ = CONCAT('Meja telah di hapus dari data meja',' | ',now());
-            INSERT INTO log_trigger VALUES (NULL,text_,now(),NULL);
+            INSERT INTO log_triggers VALUES (NULL,text_,now(),NULL);
         END
         ");
         // === Meja ===
@@ -115,7 +115,7 @@ return new class extends Migration
         BEGIN
             DECLARE text_ text(500);
             SET text_ = CONCAT('Masakan ',new.nama_masakan,' telah di tambah dari data masakan',' | ',now());
-            INSERT INTO log_trigger VALUES (NULL,text_,now(),NULL);
+            INSERT INTO log_triggers VALUES (NULL,text_,now(),NULL);
         END
         ");
         DB::unprepared("
@@ -123,7 +123,7 @@ return new class extends Migration
         BEGIN
             DECLARE text_ text(500);
             SET text_ = CONCAT('Masakan ~', old.nama_masakan,'_',old.type,'_Rp.',old.harga,'~ telah di update ', new.nama_masakan,'_',new.type,'_Rp.',new.harga,' dari data masakan',' | ',now());
-            INSERT INTO log_trigger VALUES (NULL,text_,now(),NULL);
+            INSERT INTO log_triggers VALUES (NULL,text_,now(),NULL);
         END
         ");
         DB::unprepared("
@@ -131,7 +131,7 @@ return new class extends Migration
         BEGIN
             DECLARE text_ text(500);
             SET text_ = CONCAT('Masakan ',old.nama_masakan,' telah di hapus dari data masakan',' | ',now());
-            INSERT INTO log_trigger VALUES (NULL,text_,now(),NULL);
+            INSERT INTO log_triggers VALUES (NULL,text_,now(),NULL);
         END
         ");
         // === Masakan ===
@@ -145,7 +145,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('log_trigger');
+        Schema::dropIfExists('log_triggers');
 
         // === User ===
         DB::unprepared('DROP TRIGGER `log_insert_user`');

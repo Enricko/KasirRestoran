@@ -31,6 +31,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="/admin/user" class="nav-link {{ ($sidebar == 'user' ? 'active' : '') }}">
+                <i class="nav-icon fas fa-user"></i>
+                <p>
+                    User
+                </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="/admin/masakan" class="nav-link {{ ($sidebar == 'masakan' ? 'active' : '') }}">
                 <i class="nav-icon fas fa-utensils"></i>
                 <p>
