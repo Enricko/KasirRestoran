@@ -37,9 +37,10 @@
                                                     <img src="{{ asset('images/masakan/'.$row->image) }}" alt="" class="mx-auto" style="width: 180px;height:180px;margin:5px;">
                                                     <div class="card-body">
                                                         <h6>{{ $row->nama_masakan }}</h6>
-                                                        <p>Rp.{{ number_format($row->harga,0,',','.') }}</p>
                                                         @if ($row->status_masakan == 'habis')
-                                                            <h5 class="text-danger">HABIS</h5>
+                                                        <h5 class="text-danger">HABIS</h5>
+                                                        @else
+                                                        <p>Rp.{{ number_format($row->harga,0,',','.') }}</p>
                                                         @endif
                                                     </div>
                                                 </div>
@@ -65,9 +66,10 @@
                                                     <img src="{{ asset('images/masakan/'.$row->image) }}" alt="" class="mx-auto" style="width: 180px;height:180px;margin:5px;">
                                                     <div class="card-body">
                                                         <h6>{{ $row->nama_masakan }}</h6>
-                                                        <p>Rp.{{ number_format($row->harga,0,',','.') }}</p>
                                                         @if ($row->status_masakan == 'habis')
-                                                            <h5 class="text-danger">HABIS</h5>
+                                                        <h5 class="text-danger">HABIS</h5>
+                                                        @else
+                                                        <p>Rp.{{ number_format($row->harga,0,',','.') }}</p>
                                                         @endif
                                                     </div>
                                                 </div>

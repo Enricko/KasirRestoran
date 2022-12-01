@@ -51,28 +51,40 @@ class FrontController extends Controller
     }
     public function search_makanan(){
         if (request()->ajax()) {
-            $output = '';
+            $output = array();
             $makanan = Masakan::where('type','makanan')->where('nama_masakan','LIKE','%'.request()->search.'%')->get();
             foreach($makanan as $row){
-                $output .= "<div class='col-12 col-md-6 col-xl-4'>
-                <button class='btn btn-link ".$row->status_masakan == 'habis' ? 'disabled' : ''."' value='$row->id_masakan' name='id_masakan' id='select-masakan' onclick='return select_masakan( $row->id_masakan )'>
-                    <div class='card p-2'>
-                        <img src='".asset('images/masakan/'.$row->image)."' alt='' class='mx-auto' style='width: 180px;height:180px;margin:5px;'>
-                        <div class='card-body'>
-                            <h6>".$row->nama_masakan."</h6>";
                 if ($row->status_masakan == 'habis'){
-                    $output .= "<h5 class='text-danger'>HABIS</h5>";
+                    $output []= "
+                    <div class='col-12 col-md-6 col-xl-4'>
+                        <button class='btn btn-link' value='$row->id_masakan' name='id_masakan' id='select-masakan' onclick='return select_masakan( $row->id_masakan )'>
+                            <div class='card p-2'>
+                                <img src='".asset('images/masakan/'.$row->image)."' alt='' class='mx-auto' style='width: 180px;height:180px;margin:5px;'>
+                                <div class='card-body'>
+                                    <h6>".$row->nama_masakan."</h6>
+                                    <h5 class='text-danger'>HABIS</h5>
+                                </div>
+                            </div>
+                        </button>
+                    </div>";
                 }else{
-                    $output = "<p>Rp.".number_format($row->harga,0,',','.')."</p>";
-                }
-                $output .="
-                        </div>
+                    $output []= "
+                    <div class='col-12 col-md-6 col-xl-4'>
+                        <button class='btn btn-link' value='$row->id_masakan' name='id_masakan' id='select-masakan' onclick='return select_masakan( $row->id_masakan )'>
+                            <div class='card p-2'>
+                                <img src='".asset('images/masakan/'.$row->image)."' alt='' class='mx-auto' style='width: 180px;height:180px;margin:5px;'>
+                                <div class='card-body'>
+                                    <h6>".$row->nama_masakan."</h6>
+                                    <p>Rp.".number_format($row->harga,0,',','.')."</p>
+                                </div>
+                            </div>
+                        </button>
                     </div>
-                </button>
-            </div>";
+                    ";
+                } 
             }
             if ($makanan->count() <= 0) {
-                $output .= "
+                $output []= "
                 <div class='mx-auto'>
                     <div style='min-height:150px;margin-top:75px;'>
                         Not Found
@@ -87,27 +99,41 @@ class FrontController extends Controller
     public function search_minuman(){
         
         if (request()->ajax()) {
-            $output = '';
+            $output = array();
             $minuman = Masakan::where('type','minuman')->where('nama_masakan','LIKE','%'.request()->search.'%')->get();
             foreach($minuman as $row){
-                $output .= "<div class='col-12 col-md-6 col-xl-4'>
-                <button class='btn btn-link ".$row->status_masakan == 'habis' ? 'disabled' : ''."' value='$row->id_masakan' name='id_masakan' id='select-masakan' onclick='return select_masakan( $row->id_masakan )'>
-                    <div class='card p-2'>
-                        <img src='".asset('images/masakan/'.$row->image)."' alt='' class='mx-auto' style='width: 180px;height:180px;margin:5px;'>
-                        <div class='card-body'>
-                            <h6>".$row->nama_masakan."</h6>
-                            <p>Rp.".number_format($row->harga,0,',','.')."</p>";
                 if ($row->status_masakan == 'habis'){
-                    $output .= "<h5 class='text-danger'>HABIS</h5>";
-                }
-                $output .="
-                        </div>
+                    $output []= "
+                    <div class='col-12 col-md-6 col-xl-4'>
+                        <button class='btn btn-link' value='$row->id_masakan' name='id_masakan' id='select-masakan' onclick='return select_masakan( $row->id_masakan )'>
+                            <div class='card p-2'>
+                                <img src='".asset('images/masakan/'.$row->image)."' alt='' class='mx-auto' style='width: 180px;height:180px;margin:5px;'>
+                                <div class='card-body'>
+                                    <h6>".$row->nama_masakan."</h6>
+                                    <h5 class='text-danger'>HABIS</h5>
+                                </div>
+                            </div>
+                        </button>
+                    </div>";
+                }else{
+                    $output []= "
+                    <div class='col-12 col-md-6 col-xl-4'>
+                        <button class='btn btn-link' value='$row->id_masakan' name='id_masakan' id='select-masakan' onclick='return select_masakan( $row->id_masakan )'>
+                            <div class='card p-2'>
+                                <img src='".asset('images/masakan/'.$row->image)."' alt='' class='mx-auto' style='width: 180px;height:180px;margin:5px;'>
+                                <div class='card-body'>
+                                    <h6>".$row->nama_masakan."</h6>
+                                    <p>Rp.".number_format($row->harga,0,',','.')."</p>
+                                </div>
+                            </div>
+                        </button>
                     </div>
-                </button>
-            </div>";
+                    ";
+                }
+                       
             }
             if ($minuman->count() <= 0) {
-                $output .= "
+                $output []= "
                 <div class='mx-auto'>
                     <div style='min-height:150px;margin-top:75px;'>
                         Not Found
